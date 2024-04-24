@@ -2,12 +2,15 @@ package br.com.acme_pay;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Accounts {
     private Long id;
     private Integer number;
     private Integer agency;
     private BigDecimal balance;
+    private Customers customer;
+    private List<Cards> cards;
     private Customers customers;
     private LocalDateTime created_at;
     private LocalDateTime update_at;
@@ -16,11 +19,13 @@ public class Accounts {
     public Accounts() {
     }
 
-    public Accounts(Long id, Integer number, Integer agency, BigDecimal balance, Customers customers, LocalDateTime created_at, LocalDateTime update_at, boolean closed) {
+    public Accounts(Long id, Integer number, Integer agency, BigDecimal balance, Customers customer, List<Cards> cards, Customers customers, LocalDateTime created_at, LocalDateTime update_at, boolean closed) {
         this.id = id;
         this.number = number;
         this.agency = agency;
         this.balance = balance;
+        this.customer = customer;
+        this.cards = cards;
         this.customers = customers;
         this.created_at = created_at;
         this.update_at = update_at;
@@ -57,6 +62,22 @@ public class Accounts {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public Customers getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customers customer) {
+        this.customer = customer;
+    }
+
+    public List<Cards> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Cards> cards) {
+        this.cards = cards;
     }
 
     public Customers getCustomers() {
