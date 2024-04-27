@@ -1,60 +1,90 @@
 package br.com.acme_pay;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customers {
     private Long id;
     private String name;
     private String email;
     private String phone;
     private String document;
+    private LocalDateTime created_at;
+    private LocalDateTime update_at;
+    private List<String> transactions = new ArrayList<>();
 
-    public Customers() {
+    private List<Customers> listCustomers = new ArrayList<>();
+
+    public void create(Customers customers){
+        if (!checkeCustomers(customers.document)){
+            throw new NullPointerException("error create");
+        }
+        this.setId(customers.id);
+        this.setName(customers.name);
+        this.setEmail(customers.email);
+        this.setPhone(customers.phone);
+        this.setDocument(customers.document);
+        this.setCreated_at(customers.created_at);
+        this.setUpdate_at(customers.update_at);
+        transactions.add("create customers " + LocalDateTime.now());
+        listCustomers.add(this);
     }
 
-    public Customers(Long id, String name, String email, String phone, String document) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.document = document;
+    public List<Customers> list(){
+        return listCustomers;
     }
 
-    public Long getId() {
-        return id;
+    public void delete(Long id){
+        for (Customers x : listCustomers){
+            if (x.id == id){
+                listCustomers.set(id.intValue(), new Customers());
+            }
+        }
+        throw new NullPointerException("error delete");
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void update(String document, Customers customers){
+        if (!checkeCustomers(document)){
+            throw new NullPointerException("error and update");
+        }
     }
 
-    public String getName() {
-        return name;
+    public Customers getByCustomerCPF(String document){
+        for (Customers x : listCustomers){
+            if (x.document.contains(document)){
+                return x;
+            }
+        }
+        throw new NullPointerException("error nullpointer");
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean checkeCustomers(String document){
+        for (Customers c : listCustomers){
+            if (c.document.contains(document)){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
-    public String getPhone() {
-        return phone;
-    }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
+    //create-------
+    //list----------
+    //delete -----
+    //update
+    //getByCustomerCPF------
 }
